@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-point_t	*array_to_coordinates(map_t map)
+point_t	*array_to_coordinates(fdf_t fdf)
 {
 	int	i;
 	int	j;
@@ -13,9 +13,9 @@ point_t	*array_to_coordinates(map_t map)
 		j = 0;
 		while (j < map.w)
 		{
-			coords[map.w * i + j].x = j;
-			coords[map.w * i + j].y = i;
-			coords[map.w * i + j].z = map.data[i][j];
+			coords[map.w * i + j].x = j * zoom + (fdf.mlx->width - fdf.map.w) / 2;
+			coords[map.w * i + j].y = i * zoom + (fdf.mlx->height - fdf.map.h) / 2;
+			coords[map.w * i + j].z = map.data[i][j] * zoom;
 			coords[map.w * i + j].color = color_data(j, i, map);
 			j++;
 		}
@@ -23,7 +23,7 @@ point_t	*array_to_coordinates(map_t map)
 	}
 }
 
-uint32_t color_data(int x, int y, map_t map)
+static uint32_t color_data(int x, int y, map_t map)
 {
 	int	*limit;
 	uint8_t	normed_value;
@@ -70,7 +70,7 @@ static int	*max_min(map_t map)
 	return (limit);
 }
 
-uint8_t	normalize(int value, int max, int min)
+static uint8_t	normalize(int value, int max, int min)
 {
 	uint8_t	normed_value;
 

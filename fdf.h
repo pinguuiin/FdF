@@ -24,7 +24,11 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 int	ft_isdigit(int c);
 
-point_t	*array_to_coordinates(map_t map);
+point_t	*array_to_coordinates(fdf_t fdf);
+uint32_t	color(point_t start, point_t end, double w);
+void	draw_line(mlx_image_t *img, point_t a1, point_t a2);
+void	draw_grid(point_t *arr, fdf_t fdf);
+
 
 typedef struct map_s
 {

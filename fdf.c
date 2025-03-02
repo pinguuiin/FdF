@@ -50,13 +50,13 @@ int	main(int argc, char **argv)
 	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
 	if (!(mlx = mlx_init(256, 256, "Fdf", true)))
 	{
-		free_array(map.data, map.height);
+		free_array(map.data, map.h);
 		printf("%s", mlx_strerror(mlx_errno));
 		exit(EXIT_FAILURE);
 	}
 	if (!img = mlx_new_image(mlx, 128, 128))
 	{
-		free_array(map.data, map.height);
+		free_array(map.data, map.h);
 		mlx_close_window(mlx);
 		printf("%s", mlx_strerror(mlx_errno));
 		exit(EXIT_FAILURE);
@@ -70,7 +70,7 @@ int	main(int argc, char **argv)
 
 	if (mlx_image_to_window(mlx, img, 0, 0) == -1)
 	{
-		free_array(map.data, map.height);
+		free_array(map.data, map.h);
 		mlx_close_window(mlx);
 		printf("%s", mlx_strerror(mlx_errno));
 		exit(EXIT_FAILURE);
