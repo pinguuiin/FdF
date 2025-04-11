@@ -1,33 +1,65 @@
-NAME = fdftest
+BBLACK=\033[1;30m
+BRED=\033[1;31m
+BGREEN=\033[1;32m
+BYELLOW=\033[1;33m
+BBLUE=\033[1;34m
+BPURPLE=\033[1;35m
+BCYAN=\033[1;36m
+BWHITE=\033[1;37m
+RESET_COLOR=\033[0m
 
+NAME = fdf
 CC = cc
-FLAG = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g
 
-SRCS = fdf.c \
-		parse_map.c \
-		get_next_line.c \
-		get_next_line_utils.c \
-		ft_split.c\
-		ft_atoi.c\
-		ft_strdup.c\
-		ft_isdigit.c
+LIBFT_DIR = ./src/libft
+LIBFT = $(LIBFT_DIR)/libft.a
+LIBFT_DPDS = $(wildcard $(LIBFT_DIR)/*.c $(LIBFT_DIR)/*.h)
+LIBMLX_DIR = ./src/MLX42
+LIBMLX = $(LIBMLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+HEADERS = -I./include -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)
+SRC_DIR = ./src
+OBJ_DIR = ./obj
 
-OBJS = $(SRCS:.c=.o)
+SRC_FILES = fdf.c \
+			parse_map.c \
+			draw_line.c\
+			color_pixel.c\
+			array_to_coordinates.c\
+			initialize_image.c
 
-%.o: %.c
-	$(CC) $(FLAG) -I. -c $< -o $@
+SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
-all: $(NAME)
+all: libmlx $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(FLAG) -o $(NAME) $(OBJS)
+libmlx:
+		if [ ! -d "$(LIBMLX_DIR)" ]; then git clone https://github.com/codam-coding-college/MLX42.git $(LIBMLX_DIR); fi
+		@cmake $(LIBMLX_DIR) -B $(LIBMLX_DIR)/build && make -C $(LIBMLX_DIR)/build -j4
+
+$(LIBFT): $(LIBFT_DPDS)
+		@make -C $(LIBFT_DIR)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
+		@mkdir -p $(OBJ_DIR)
+		$(CC) $(FLAGS) $(HEADERS) -c $< -o $@
+		@echo "$(BGREEN) Compiled $^ $(RESET_COLOR)"
+
+$(NAME): $(LIBFT) $(OBJS)
+		$(CC) $(FLAGS) $(OBJS) $(LIBFT) $(LIBMLX) $(HEADERS) -o $(NAME)
+		@echo "$(BPURPLE) Linked $(RESET_COLOR)"
 
 clean:
-	rm -f $(OBJS)
+		@make clean -C $(LIBFT_DIR)
+		rm -rf $(OBJ_DIR)
+		@rm -rf $(LIBMLX_DIR)/build
+		@echo "$(BBLUE) Cleaned .o files $(RESET)"
 
 fclean: clean
-	rm -f $(NAME)
+		@make fclean -C $(LIBFT_DIR)
+		rm -f $(NAME)
+		@echo "$(BBLUE) Cleaned all $(RESET)"
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re libmlx

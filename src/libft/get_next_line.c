@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "libft.h"
 
-char	*next_line_check(char *line, char *buf)
+static char	*next_line_check(char *line, char *buf)
 {
 	char	*temp;
 
@@ -41,7 +41,7 @@ char	*next_line_check(char *line, char *buf)
 	return (line);
 }
 
-char	*read_and_check(int fd, char *buf, char *line)
+static char	*read_and_check(int fd, char *buf, char *line)
 {
 	ssize_t	byteread;
 
