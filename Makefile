@@ -21,12 +21,13 @@ HEADERS = -I./include -I$(LIBMLX_DIR)/include -I$(LIBFT_DIR)
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 
-SRC_FILES = fdf.c \
+SRC_FILES = main.c \
 			parse_map.c \
-			draw_line.c\
-			color_pixel.c\
+			draw_line.c \
+			color_pixel.c \
 			array_to_coordinates.c\
-			initialize_image.c
+			draw_grid.c \
+			utils.c
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
@@ -40,7 +41,7 @@ libmlx:
 $(LIBFT): $(LIBFT_DPDS)
 		@make -C $(LIBFT_DIR)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c ./include/fdf.h
 		@mkdir -p $(OBJ_DIR)
 		$(CC) $(FLAGS) $(HEADERS) -c $< -o $@
 		@echo "$(BGREEN) Compiled $^ $(RESET_COLOR)"
@@ -53,12 +54,12 @@ clean:
 		@make clean -C $(LIBFT_DIR)
 		rm -rf $(OBJ_DIR)
 		@rm -rf $(LIBMLX_DIR)/build
-		@echo "$(BBLUE) Cleaned .o files $(RESET)"
+		@echo "$(BBLUE) Cleaned .o files $(RESET_COLOR)"
 
 fclean: clean
 		@make fclean -C $(LIBFT_DIR)
 		rm -f $(NAME)
-		@echo "$(BBLUE) Cleaned all $(RESET)"
+		@echo "$(BBLUE) Cleaned all $(RESET_COLOR)"
 
 re: fclean all
 

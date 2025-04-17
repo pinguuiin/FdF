@@ -1,137 +1,138 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_line.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/17 03:08:41 by piyu              #+#    #+#             */
+/*   Updated: 2025/04/17 03:08:46 by piyu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-void	swap_point(draw_t *draw)
+void	swap_point(draw_t *f)
 {
 	point_t	temp;
 
-	temp = draw->a1;
-	draw->a1 = draw->a2;
-	draw->a2 = temp;
-	draw->dx *= -1;
-	draw->dy *= -1;
+	temp = f->a1;
+	f->a1 = f->a2;
+	f->a2 = temp;
+	f->dx *= -1;
+	f->dy *= -1;
 }
 
-// void	draw_pixel(mlx_image_t *img, int x, int y, int color)
-// {
-// 	uint8_t	*offset;
-
-// 	offset = img->pixels + img->width * y + x * 4;
-// 	*offset = color;
-// }
-
-// /** Draws a line horizontally
+// /** above_midraws a line horizontally
 //  * @param img The mlx image
 //  * @param a1 The a1ing point
 //  * @param a2 The a2ing point
 //  * @param dx Something needed
 //  * @param dy The other something
 //  */
-void	draw_line_hv(draw_t draw)
+void	draw_line_hv(draw_t f)
 {
-	int	x;
-	int	y;
-
-	if ((draw.dx == 0 && draw.dy < 0) || (draw.dy == 0 && draw.dx < 0))
-		swap_point(&draw);
-	x = draw.a1.x;
-	y = draw.a1.y;
-	if (draw.dx == 0 && draw.dy != 0)
+	if ((f.dx == 0 && f.dy < 0) || (f.dy == 0 && f.dx < 0))
+		swap_point(&f);
+	f.x = (int)f.a1.x;
+	f.y = (int)f.a1.y;
+	if (f.dx == 0 && f.dy != 0)
 	{
-		while (y < draw.a2.y)
+		while (f.y <= f.a2.y)
 		{
-			mlx_put_pixel(draw.img, x, y, color(draw.a1, draw.a2, (double)(y - draw.a1.y) / draw.dy));
-			y++;
+			if ((f.x >= 0 && f.x < WIN_W) && (f.y >= 0 && f.y < WIN_H))
+				mlx_put_pixel(f.img, f.x, f.y, color(f.a1, f.a2, \
+					(f.y - f.a1.y) / f.dy));
+			f.y++;
 		}
 	}
-	else if (draw.dy == 0 && draw.dx != 0)
+	else if (f.dy == 0 && f.dx != 0)
 	{
-		while (x < draw.a2.x)
+		while (f.x <= f.a2.x)
 		{
-			mlx_put_pixel(draw.img, x, y, color(draw.a1, draw.a2, (double) (x - draw.a1.x) /draw.dx));
-			x++;
+			if ((f.x >= 0 && f.x < WIN_W) && (f.y >= 0 && f.y < WIN_H))
+				mlx_put_pixel(f.img, f.x, f.y, color(f.a1, f.a2, \
+					(f.x - f.a1.x) / f.dx));
+			f.x++;
 		}
-	}
-}
-
-void	draw_line_flat(draw_t draw)
-{
-	int	x;
-	int	y;
-	int	step;
-	int	D;
-
-	step = 1;
-	if (draw.dy < 0)
-		step = -1;
-	draw.dy *= step;
-	D = 2 * draw.dy - draw.dx;
-	x = draw.a1.x;
-	y = draw.a1.y;
-	while (x < draw.a2.x)
-	{
-		mlx_put_pixel(draw.img, x, y, color(draw.a1, draw.a2, (double) (x - draw.a1.x) /draw.dx));
-		if (D > 0)
-		{
-			y += step;
-			D += 2 * draw.dy - 2 * draw.dx;
-		}
-		else
-			D += 2 * draw.dy;
-		x++;
 	}
 }
 
-void	draw_line_steep(draw_t draw)
+void	draw_line_flat(draw_t f)
 {
-	int	x;
-	int	y;
-	int	step;
-	int	D;
+	int		step;
+	double	above_mid;
 
 	step = 1;
-	if (draw.dx < 0)
+	if (f.dy < 0)
 		step = -1;
-	draw.dx *= step;
-	D = 2 * draw.dx - draw.dy;
-	x = draw.a1.x;
-	y = draw.a1.y;
-	while (y < draw.a2.y)
+	f.dy *= step;
+	above_mid = 2 * f.dy - f.dx;
+	f.x = (int)f.a1.x;
+	f.y = (int)f.a1.y;
+	while (f.x <= f.a2.x)
 	{
-		mlx_put_pixel(draw.img, x, y, color(draw.a1, draw.a2, (double) (y - draw.a1.y) /draw.dy));
-		if (D > 0)
+		if ((f.x >= 0 && f.x < WIN_W) && (f.y >= 0 && f.y < WIN_H))
+			mlx_put_pixel(f.img, f.x, f.y, color(f.a1, f.a2, \
+				(f.x - f.a1.x) / f.dx));
+		if (above_mid > 0)
 		{
-			x += step;
-			D += 2 * draw.dx - 2 * draw.dy;
+			f.y += step;
+			above_mid -= 2 * f.dx;
 		}
-		else
-			D += 2 * draw.dx;
-		y++;
+		above_mid += 2 * f.dy;
+		f.x++;
+	}
+}
+
+void	draw_line_steep(draw_t f)
+{
+	int		step;
+	double	above_mid;
+
+	step = 1;
+	if (f.dx < 0)
+		step = -1;
+	f.dx *= step;
+	above_mid = 2 * f.dx - f.dy;
+	f.x = (int)f.a1.x;
+	f.y = (int)f.a1.y;
+	while (f.y <= f.a2.y)
+	{
+		if ((f.x >= 0 && f.x < WIN_W) && (f.y >= 0 && f.y < WIN_H))
+			mlx_put_pixel(f.img, f.x, f.y, color(f.a1, f.a2, \
+				(f.y - f.a1.y) / f.dy));
+		if (above_mid > 0)
+		{
+			f.x += step;
+			above_mid -= 2 * f.dy;
+		}
+		above_mid += 2 * f.dx;
+		f.y++;
 	}
 }
 
 void	draw_line(mlx_image_t *img, point_t a1, point_t a2)
 {
 	double	k;
-	draw_t	draw;
+	draw_t	f;
 
-	// if (a1.x < 0 || a1.x > WIN_W || a1.y < 0 || a1.y > WIN_W)
-	// 	return ;
-	draw.a1 = a1;
-	draw.a2 = a2;
-	draw.dx = a2.x - a1.x;
-	draw.dy = a2.y - a1.y;
-	draw.img = img;
-	if (draw.dx == 0 || draw.dy == 0)
+	f.a1 = a1;
+	f.a2 = a2;
+	f.dx = a2.x - a1.x;
+	f.dy = a2.y - a1.y;
+	f.img = img;
+	if (f.dx == 0 || f.dy == 0)
 	{
-		draw_line_hv(draw);
+		draw_line_hv(f);
 		return ;
 	}
-	k = (double) (a2.y - a1.y) / (a2.x - a1.x);
-	if ((k >= -1 && k <= 1 && draw.dx < 0) || ((k > 1 || k < -1) && draw.dy < 0))
-		swap_point(&draw);
+	k = (a2.y - a1.y) / (a2.x - a1.x);
+	if ((k >= -1 && k <= 1 && f.dx < 0) || ((k > 1 || k < -1) && f.dy < 0))
+		swap_point(&f);
 	if (k >= -1 && k <= 1)
-		draw_line_flat(draw);
+		draw_line_flat(f);
 	else
-		draw_line_steep(draw);
+		draw_line_steep(f);
 	return ;
 }
