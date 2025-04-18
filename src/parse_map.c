@@ -6,7 +6,7 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:09:57 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/17 03:09:59 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/18 04:24:28 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	assign_value(char *s, map_t *map)
 			s++;
 		if (ft_isdigit(*s) || *s == '-')
 		{
-			map->data[i++] = ft_atoi(s);
+			map->data[i++] = (double)ft_atoi(s);
 			while (*s && *s != ' ' && *s != '\n')
 				s++;
 		}
@@ -60,7 +60,7 @@ static void	format_array(char *s, map_t *map)
 		free(s);
 		message_exit("Empty map", 0);
 	}
-	map->data = ft_calloc(map->h * map->w, sizeof(int));
+	map->data = ft_calloc(map->h * map->w, sizeof(double));
 	if (map->data == NULL)
 	{
 		free(s);

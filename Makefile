@@ -27,7 +27,8 @@ SRC_FILES = main.c \
 			color_pixel.c \
 			array_to_coordinates.c\
 			draw_grid.c \
-			utils.c
+			utils.c \
+			key_operations.c
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

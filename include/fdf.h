@@ -5,7 +5,7 @@
 #  define BUFFER_SIZE 1000
 # endif
 # ifndef WIN_W
-#  define WIN_W 2048
+#  define WIN_W 1024
 # endif
 # ifndef WIN_H
 #  define WIN_H 1024
@@ -24,11 +24,11 @@
 
 typedef struct map_s
 {
-	int	w;
-	int	h;
-	int	max;
-	int	min;
-	int	*data;
+	int		w;
+	int		h;
+	double	max;
+	double	min;
+	double	*data;
 }	map_t;
 
 typedef struct point_s
@@ -43,8 +43,11 @@ typedef struct fdf_s
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	map_t		map;
-	int			offset[2];
+	// double		midpoint[2];
+	double		offset[2];
+	double		offset_init[2];
 	double		zoom;
+	double		zoom_cumulation;
 	point_t 	*coord;
 }	fdf_t;
 
@@ -62,9 +65,13 @@ typedef struct draw_s
 void		message_exit(char *s, int sys_error_flag);
 void		free_exit(fdf_t *fdf, char *s, int sys_error_flag);
 void		get_max_min(map_t *map);
+// void		get_coordinate_midpoint(fdf_t *fdf);
+void		get_coordinate_offset(fdf_t *fdf);
 void		parse_map(int fd, map_t *map);
+void		move(mlx_key_data_t keydata, fdf_t *fdf);
+void		tune_elevation(mlx_key_data_t keydata, fdf_t *fdf);
 void		array_to_coordinates(fdf_t *fdf);
-void		zoom_coordinates(fdf_t *fdf);
+void		move_coordinates(fdf_t *fdf, int horizontal_incre, int vertical_incre);
 uint32_t	color(point_t start, point_t end, double w);
 void		draw_line(mlx_image_t *img, point_t a1, point_t a2);
 void		draw_grid(void *param);
