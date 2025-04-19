@@ -6,7 +6,7 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:09:03 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/18 21:19:09 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/19 21:42:21 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static uint32_t	color_data(int i, map_t map)
 	return (r << 24 | g << 16 | b << 8 | 255);
 }
 
-void	array_to_coordinates(fdf_t *fdf)
+void	array_to_coordinates(fdf_t *fdf, double zoom, double x_offset, double y_offset)
 {
 	int	i;
 	int	j;
@@ -47,9 +47,9 @@ void	array_to_coordinates(fdf_t *fdf)
 		j = 0;
 		while (j < fdf->map.w)
 		{
-			fdf->coord[fdf->map.w * i + j].x = (j - i) * cos(M_PI / 6.0) * fdf->zoom + fdf->offset[0];
+			fdf->coord[fdf->map.w * i + j].x = (j - i) * cos(M_PI / 6.0) * zoom + x_offset;
 			fdf->coord[fdf->map.w * i + j].y = ((i + j) * sin(M_PI / 6.0) \
-			- fdf->map.data[fdf->map.w * i + j]) * fdf->zoom + fdf->offset[1];
+			- fdf->map.data[fdf->map.w * i + j]) * zoom + y_offset;
 			fdf->coord[fdf->map.w * i + j].color = color_data(fdf->map.w * i + j, fdf->map);
 			// printf("x:%i\t", fdf->coord[w * i + j].x);
 			// printf("y:%i\n", fdf->coord[w * i + j].y);

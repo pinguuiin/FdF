@@ -6,7 +6,7 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 03:15:56 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/18 23:04:53 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/19 22:06:17 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,5 @@ void	tune_elevation(mlx_key_data_t keydata, fdf_t *fdf)
 	else if (keydata.key == MLX_KEY_2)
 		tune_map(&(fdf->map), 1.10);
 	fdf->zoom = fdf->zoom_cumulation;
-	get_coordinate_offset(fdf);
-	fdf->offset[0] = fdf->offset_init[0] - fdf->offset[0];
-	fdf->offset[1] = fdf->offset_init[1] - fdf->offset[1];
-	array_to_coordinates(fdf);
+	array_to_coordinates(fdf, fdf->zoom, fdf->coord[0].x, fdf->coord[0].y + fdf->map.data[0] * fdf->zoom);
 }

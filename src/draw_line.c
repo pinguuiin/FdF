@@ -6,13 +6,13 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:08:41 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/17 03:08:46 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/19 18:59:49 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	swap_point(draw_t *f)
+static inline void	swap_point(draw_t *f)
 {
 	point_t	temp;
 
@@ -30,7 +30,7 @@ void	swap_point(draw_t *f)
 //  * @param dx Something needed
 //  * @param dy The other something
 //  */
-void	draw_line_hv(draw_t f)
+static inline void	draw_line_hv(draw_t f)
 {
 	if ((f.dx == 0 && f.dy < 0) || (f.dy == 0 && f.dx < 0))
 		swap_point(&f);
@@ -58,7 +58,7 @@ void	draw_line_hv(draw_t f)
 	}
 }
 
-void	draw_line_flat(draw_t f)
+static inline void	draw_line_flat(draw_t f)
 {
 	int		step;
 	double	above_mid;
@@ -85,7 +85,7 @@ void	draw_line_flat(draw_t f)
 	}
 }
 
-void	draw_line_steep(draw_t f)
+static inline void	draw_line_steep(draw_t f)
 {
 	int		step;
 	double	above_mid;

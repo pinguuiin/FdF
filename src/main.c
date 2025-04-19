@@ -6,7 +6,7 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:09:12 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/18 22:21:23 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/19 21:50:08 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,9 @@ void	initialize_struct(map_t *map, fdf_t *fdf)
 	fdf->coord = ft_calloc(map->w * map->h, sizeof(point_t));
 	if (fdf->coord == NULL)
 		free_exit(fdf, "Error allocating array", 0);
-	fdf->offset[0] = 0;
-	fdf->offset[1] = 0;
-	array_to_coordinates(fdf);
-	get_coordinate_offset(fdf);
-	fdf->offset_init[0] = fdf->offset[0];
-	fdf->offset_init[1] = fdf->offset[1];
-	array_to_coordinates(fdf);
+	array_to_coordinates(fdf, INIT_ZOOM, 0, 0);
+	get_center_offset(fdf);
+	array_to_coordinates(fdf, INIT_ZOOM, fdf->offset[0], fdf->offset[1]);
 	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
 	fdf->mlx = mlx_init(WIN_W, WIN_H, "Fdf", true);
 	if (!fdf->mlx)

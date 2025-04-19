@@ -6,7 +6,7 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:10:07 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/18 21:57:16 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/19 21:19:09 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	get_max_min(map_t *map)
 	map->min = min;
 }
 
-void	get_coordinate_offset(fdf_t *fdf)
+void	get_center_offset(fdf_t *fdf)
 {
 	int		i;
 	double	x[2];
