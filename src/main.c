@@ -6,7 +6,7 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:09:12 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/19 21:50:08 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/20 02:12:27 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	initialize_struct(map_t *map, fdf_t *fdf)
 	fdf->coord = ft_calloc(map->w * map->h, sizeof(point_t));
 	if (fdf->coord == NULL)
 		free_exit(fdf, "Error allocating array", 0);
+	array_to_xyz(fdf);
 	array_to_coordinates(fdf, INIT_ZOOM, 0, 0);
 	get_center_offset(fdf);
 	array_to_coordinates(fdf, INIT_ZOOM, fdf->offset[0], fdf->offset[1]);
@@ -65,11 +66,12 @@ void	key_operations(mlx_key_data_t keydata, void *param)
 	fdf = (fdf_t *)param;
 	if (keydata.key == MLX_KEY_ESCAPE)
 		mlx_close_window(fdf->mlx);
-	else if (keydata.key == MLX_KEY_A || keydata.key == MLX_KEY_LEFT \
-	||keydata.key == MLX_KEY_D || keydata.key == MLX_KEY_RIGHT \
-	||keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_UP \
-	||keydata.key == MLX_KEY_S || keydata.key == MLX_KEY_DOWN)
+	else if (keydata.key == MLX_KEY_LEFT || keydata.key == MLX_KEY_RIGHT \
+	||keydata.key == MLX_KEY_UP || keydata.key == MLX_KEY_DOWN)
 		move(keydata, fdf);
+	else if (keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_A \
+	||keydata.key == MLX_KEY_S || keydata.key == MLX_KEY_D)
+		rotate(keydata, fdf);
 	else if (keydata.key == MLX_KEY_1 || keydata.key == MLX_KEY_2)
 		tune_elevation(keydata, fdf);
 }

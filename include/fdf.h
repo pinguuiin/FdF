@@ -11,7 +11,7 @@
 #  define WIN_H 1024
 # endif
 # ifndef INIT_ZOOM
-#  define INIT_ZOOM 20
+#  define INIT_ZOOM 2
 # endif
 
 #include "../src/libft/libft.h"
@@ -33,6 +33,9 @@ typedef struct map_s
 
 typedef struct point_s
 {
+	double		x3;
+	double		y3;
+	double		z3;
 	double		x;
 	double		y;
 	uint32_t	color;
@@ -69,9 +72,11 @@ void		get_max_min(map_t *map);
 void		get_center_offset(fdf_t *fdf);
 void		parse_map(int fd, map_t *map);
 void		move(mlx_key_data_t keydata, fdf_t *fdf);
+void		rotate(mlx_key_data_t keydata, fdf_t *fdf);
 void		tune_elevation(mlx_key_data_t keydata, fdf_t *fdf);
+uint32_t	color_data(int i, map_t map);
+void		array_to_xyz(fdf_t *fdf);
 void		array_to_coordinates(fdf_t *fdf, double zoom, double x_offset, double y_offset);
-void		move_coordinates(fdf_t *fdf, int horizontal_incre, int vertical_incre);
 uint32_t	color(point_t start, point_t end, double w);
 void		draw_line(mlx_image_t *img, point_t a1, point_t a2);
 void		draw_grid(void *param);
