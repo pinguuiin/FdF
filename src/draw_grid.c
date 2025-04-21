@@ -6,7 +6,7 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:09:07 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/17 03:09:08 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/21 19:19:07 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void	draw_grid(void *param)
 {
-	fdf_t	*fdf;
+	t_fdf	*fdf;
 	int		i;
 	int		w;
 	int		h;
+	int		mouse[2];
 
 	i = 0;
-	fdf = (fdf_t *)param;
+	fdf = (t_fdf *)param;
 	w = fdf->map.w;
 	h = fdf->map.h;
 	ft_memset(fdf->img->pixels, 0x00, WIN_H * WIN_W * 4);
@@ -32,5 +33,8 @@ void	draw_grid(void *param)
 			draw_line(fdf->img, fdf->coord[i], fdf->coord[i + w]);
 		i++;
 	}
-	//mlx_put_string(fdf->mlx, "3D Wireframe Map", fdf->coord[0].x - 170, fdf->coord[i].y + 800);
+	mlx_get_mouse_pos(fdf->mlx, &mouse[0], &mouse[1]);
+	mlx_put_string(fdf->mlx, "3D Wireframe Map", 450, 20);
+	mlx_put_string(fdf->mlx, "zoom: scroll  move: arrow keys  elevate: 1/2  \
+	rotate: WASD or mouse left  projection: I/O", 20, 980);
 }

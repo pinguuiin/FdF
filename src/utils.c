@@ -6,13 +6,13 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:10:07 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/19 21:19:09 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/21 02:55:19 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	get_max_min(map_t *map)
+void	get_max_min(t_map *map)
 {
 	int		i;
 	double	max;
@@ -33,7 +33,7 @@ void	get_max_min(map_t *map)
 	map->min = min;
 }
 
-void	get_center_offset(fdf_t *fdf)
+void	get_center_offset(t_fdf *fdf)
 {
 	int		i;
 	double	x[2];
@@ -69,7 +69,7 @@ void	message_exit(char *s, int sys_error_flag)
 	exit(EXIT_FAILURE);
 }
 
-void	free_exit(fdf_t *fdf, char *s, int sys_error_flag)
+void	free_exit(t_fdf *fdf, char *s, int sys_error_flag)
 {
 	if (fdf->map.data)
 		free(fdf->map.data);

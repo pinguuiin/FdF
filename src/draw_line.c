@@ -6,15 +6,15 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:08:41 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/19 18:59:49 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/21 02:55:39 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static inline void	swap_point(draw_t *f)
+static inline void	swap_point(t_draw *f)
 {
-	point_t	temp;
+	t_point	temp;
 
 	temp = f->a1;
 	f->a1 = f->a2;
@@ -23,14 +23,7 @@ static inline void	swap_point(draw_t *f)
 	f->dy *= -1;
 }
 
-// /** above_midraws a line horizontally
-//  * @param img The mlx image
-//  * @param a1 The a1ing point
-//  * @param a2 The a2ing point
-//  * @param dx Something needed
-//  * @param dy The other something
-//  */
-static inline void	draw_line_hv(draw_t f)
+static inline void	draw_line_hv(t_draw f)
 {
 	if ((f.dx == 0 && f.dy < 0) || (f.dy == 0 && f.dx < 0))
 		swap_point(&f);
@@ -58,7 +51,7 @@ static inline void	draw_line_hv(draw_t f)
 	}
 }
 
-static inline void	draw_line_flat(draw_t f)
+static inline void	draw_line_flat(t_draw f)
 {
 	int		step;
 	double	above_mid;
@@ -85,7 +78,7 @@ static inline void	draw_line_flat(draw_t f)
 	}
 }
 
-static inline void	draw_line_steep(draw_t f)
+static inline void	draw_line_steep(t_draw f)
 {
 	int		step;
 	double	above_mid;
@@ -112,10 +105,10 @@ static inline void	draw_line_steep(draw_t f)
 	}
 }
 
-void	draw_line(mlx_image_t *img, point_t a1, point_t a2)
+void	draw_line(mlx_image_t *img, t_point a1, t_point a2)
 {
 	double	k;
-	draw_t	f;
+	t_draw	f;
 
 	f.a1 = a1;
 	f.a2 = a2;

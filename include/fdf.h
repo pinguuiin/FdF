@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/21 02:55:59 by piyu              #+#    #+#             */
+/*   Updated: 2025/04/21 19:38:56 by piyu             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_H
 # define FDF_H
 
@@ -11,27 +23,27 @@
 #  define WIN_H 1024
 # endif
 # ifndef INIT_ZOOM
-#  define INIT_ZOOM 2
+#  define INIT_ZOOM 20
 # endif
 
-#include "../src/libft/libft.h"
-#include "../src/MLX42/include/MLX42/MLX42.h"
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h> ///
-#include <stdlib.h>
-#include <math.h>
+# include "../src/libft/libft.h"
+# include "../src/MLX42/include/MLX42/MLX42.h"
+# include <fcntl.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <math.h>
 
-typedef struct map_s
+typedef struct s_map
 {
 	int		w;
 	int		h;
 	double	max;
 	double	min;
 	double	*data;
-}	map_t;
+}	t_map;
 
-typedef struct point_s
+typedef struct s_point
 {
 	double		x3;
 	double		y3;
@@ -39,46 +51,55 @@ typedef struct point_s
 	double		x;
 	double		y;
 	uint32_t	color;
-}	point_t;
+}	t_point;
 
-typedef struct fdf_s
+typedef struct s_fdf
 {
 	mlx_t		*mlx;
 	mlx_image_t	*img;
-	map_t		map;
-	// double		midpoint[2];
+	t_map		map;
 	double		offset[2];
-	// double		offset_init[2];
 	double		zoom;
 	double		zoom_cumulation;
-	point_t 	*coord;
-}	fdf_t;
+	double		elev_factor;
+	t_point		*coord;
+	char		proj;
+	int			ortho_view;
+	int			prev_mouse;
+	int			prev_x;
+	int			prev_y;
+}	t_fdf;
 
-typedef struct draw_s
+typedef struct s_draw
 {
 	mlx_image_t	*img;
-	point_t		a1;
-	point_t		a2;
+	t_point		a1;
+	t_point		a2;
 	double		dx;
 	double		dy;
 	int			x;
 	int			y;
-}	draw_t;
+}	t_draw;
 
-void		message_exit(char *s, int sys_error_flag);
-void		free_exit(fdf_t *fdf, char *s, int sys_error_flag);
-void		get_max_min(map_t *map);
-// void		get_coordinate_midpoint(fdf_t *fdf);
-void		get_center_offset(fdf_t *fdf);
-void		parse_map(int fd, map_t *map);
-void		move(mlx_key_data_t keydata, fdf_t *fdf);
-void		rotate(mlx_key_data_t keydata, fdf_t *fdf);
-void		tune_elevation(mlx_key_data_t keydata, fdf_t *fdf);
-uint32_t	color_data(int i, map_t map);
-void		array_to_xyz(fdf_t *fdf);
-void		array_to_coordinates(fdf_t *fdf, double zoom, double x_offset, double y_offset);
-uint32_t	color(point_t start, point_t end, double w);
-void		draw_line(mlx_image_t *img, point_t a1, point_t a2);
+uint32_t	color_data(int i, t_map map, double elev_factor);
+uint32_t	color(t_point start, t_point end, double w);
 void		draw_grid(void *param);
+void		draw_line(mlx_image_t *img, t_point a1, t_point a2);
+void		move(mlx_key_data_t keydata, t_fdf *fdf);
+void		tune_elevation(mlx_key_data_t keydata, t_fdf *fdf);
+void		initialize_struct(t_map *map, t_fdf *fdf, char proj);
+void		mouse_track(void *param);
+void		parse_map(int fd, t_map *map);
+void		array_to_xyz(t_fdf *fdf);
+void		array_to_coordinates(t_fdf *fdf, double x_offset, double y_offset);
+void		switch_projection(mlx_key_data_t keydata, t_fdf *fdf);
+void		rotate_x(t_fdf *fdf, double rad);
+void		rotate_y(t_fdf *fdf, double rad);
+void		rotate_z(t_fdf *fdf, double rad);
+void		rotate(mlx_key_data_t keydata, t_fdf *fdf);
+void		get_max_min(t_map *map);
+void		get_center_offset(t_fdf *fdf);
+void		message_exit(char *s, int sys_error_flag);
+void		free_exit(t_fdf *fdf, char *s, int sys_error_flag);
 
 #endif

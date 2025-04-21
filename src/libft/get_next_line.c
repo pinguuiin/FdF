@@ -6,7 +6,7 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 21:41:36 by piyu              #+#    #+#             */
-/*   Updated: 2024/11/27 21:17:33 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/21 21:07:28 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*read_and_check(int fd, char *buf, char *line)
 		}
 		buf[byteread] = '\0';
 		line = next_line_check(line, buf);
-		if (ft_strchr(line, '\n') || !line)
+		if (!line || ft_strchr(line, '\n'))
 			return (line);
 	}
 }
@@ -74,7 +74,7 @@ char	*get_next_line(int fd)
 	if (buf[0])
 	{
 		line = next_line_check(line, buf);
-		if (ft_strchr(line, '\n') || !line)
+		if (!line || ft_strchr(line, '\n'))
 			return (line);
 	}
 	line = read_and_check(fd, buf, line);

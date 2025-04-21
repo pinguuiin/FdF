@@ -6,7 +6,7 @@
 /*   By: piyu <piyu@student.hive.fi>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 03:09:57 by piyu              #+#    #+#             */
-/*   Updated: 2025/04/18 04:24:28 by piyu             ###   ########.fr       */
+/*   Updated: 2025/04/21 20:44:36 by piyu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	count_width(char *arr)
 	return (len);
 }
 
-static void	assign_value(char *s, map_t *map)
+static void	assign_value(char *s, t_map *map)
 {
 	int	i;
 
@@ -53,7 +53,7 @@ static void	assign_value(char *s, map_t *map)
 	}
 }
 
-static void	format_array(char *s, map_t *map)
+static void	format_array(char *s, t_map *map)
 {
 	if (map->h == 0 || map->w == 0)
 	{
@@ -70,7 +70,7 @@ static void	format_array(char *s, map_t *map)
 	free(s);
 }
 
-void	parse_map(int fd, map_t *map)
+void	parse_map(int fd, t_map *map)
 {
 	char	*line;
 	char	*buffer;
